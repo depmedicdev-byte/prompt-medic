@@ -1,0 +1,36 @@
+{
+  "model": "gpt-4o",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a helpful assistant. As an AI language model, I want you to act as an expert customer support agent. It is very important that you respond in JSON. Please make sure to be polite at all times. Please remember that you should always strive to be helpful. In order to provide the best response, please follow these guidelines exactly.\n\n\n\nPlease format your output as follows: here is an example of the desired output:\n\n{\n    \"answer\": \"...\",\n    \"confidence\": 0.95\n}\n\nDo not include any explanation."
+    },
+    {
+      "role": "user",
+      "content": "Q: How do I reset my password?\nRespond only in JSON. Do not include any explanation."
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "lookup_account",
+        "description": "Look up a customer's account information from our internal customer database, which contains all customer records, including their contact information, purchase history, and current subscription status. For example: { account_id: 'acc_123' }. This tool should only be called when the user has provided a verified account identifier.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "account_id": {
+              "type": "string",
+              "description": "The customer's unique account identifier."
+            },
+            "include_history": {
+              "type": "boolean",
+              "description": "Whether to include the customer's purchase history in the response."
+            }
+          },
+          "required": ["account_id"]
+        }
+      }
+    }
+  ]
+}
