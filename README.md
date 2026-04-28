@@ -1,10 +1,10 @@
-# prompt-doctor
+# prompt-medic
 
 Audit LLM prompts and system messages for token waste. Rule-based,
 fast, no API calls, no telemetry.
 
 ```bash
-npx prompt-doctor request.json
+npx prompt-medic request.json
 ```
 
 ```
@@ -35,9 +35,9 @@ summary
 ## Install
 
 ```bash
-npm i -g prompt-doctor
+npm i -g prompt-medic
 # or
-npx prompt-doctor <args>
+npx prompt-medic <args>
 ```
 
 No build step, zero dependencies.
@@ -47,7 +47,7 @@ No build step, zero dependencies.
 ### Audit a request body
 
 ```bash
-prompt-doctor request.json
+prompt-medic request.json
 ```
 
 Accepts:
@@ -59,25 +59,25 @@ Accepts:
 ### Read from stdin
 
 ```bash
-cat request.json | prompt-doctor --stdin --json
+cat request.json | prompt-medic --stdin --json
 ```
 
 ### Audit a single system prompt
 
 ```bash
-prompt-doctor --system system.txt
+prompt-medic --system system.txt
 ```
 
 ### Audit only tool definitions
 
 ```bash
-prompt-doctor --tools tools.json
+prompt-medic --tools tools.json
 ```
 
 ### Combine pieces
 
 ```bash
-prompt-doctor --system system.txt --messages convo.json --tools tools.json
+prompt-medic --system system.txt --messages convo.json --tools tools.json
 ```
 
 ### Cost basis
@@ -91,13 +91,13 @@ gemini-pro, gemini-flash
 ```
 
 ```bash
-prompt-doctor request.json --model claude-sonnet
+prompt-medic request.json --model claude-sonnet
 ```
 
 ### CI mode
 
 ```bash
-prompt-doctor request.json --fail-on warn --quiet
+prompt-medic request.json --fail-on warn --quiet
 ```
 
 Exits non-zero if any `warn` or `error` finding fires. Pair with a
@@ -106,7 +106,7 @@ captured production request body to catch regressions in PR.
 ## Programmatic API
 
 ```js
-const { audit } = require('prompt-doctor');
+const { audit } = require('prompt-medic');
 
 const r = audit({
   messages: [

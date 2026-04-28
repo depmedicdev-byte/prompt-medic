@@ -4,14 +4,14 @@ const path = require('node:path');
 const { audit } = require('../src/index.js');
 
 function usage() {
-  console.log(`prompt-doctor - audit LLM prompts for token waste
+  console.log(`prompt-medic - audit LLM prompts for token waste
 
 usage:
-  prompt-doctor <file.json>            audit a request body
-  prompt-doctor --stdin                read JSON from stdin
-  prompt-doctor --system <file.txt>    audit a single system prompt
-  prompt-doctor --messages <file.json> audit a messages[] array
-  prompt-doctor --tools <file.json>    audit a tools[] array
+  prompt-medic <file.json>            audit a request body
+  prompt-medic --stdin                read JSON from stdin
+  prompt-medic --system <file.txt>    audit a single system prompt
+  prompt-medic --messages <file.json> audit a messages[] array
+  prompt-medic --tools <file.json>    audit a tools[] array
 
 options:
   --model <name>                       cost basis (default: gpt-4o)
@@ -24,9 +24,9 @@ options:
                                        level (info|warn|error). Default: never.
 
 examples:
-  prompt-doctor request.json
-  cat request.json | prompt-doctor --stdin --json
-  prompt-doctor --system system.txt --model claude-sonnet
+  prompt-medic request.json
+  cat request.json | prompt-medic --stdin --json
+  prompt-medic --system system.txt --model claude-sonnet
 `);
 }
 
@@ -63,7 +63,7 @@ function loadJSON(file) {
   try {
     return JSON.parse(fs.readFileSync(file, 'utf8'));
   } catch (e) {
-    console.error(`prompt-doctor: failed to parse ${file}: ${e.message}`);
+    console.error(`prompt-medic: failed to parse ${file}: ${e.message}`);
     process.exit(2);
   }
 }
@@ -71,7 +71,7 @@ function loadJSON(file) {
 function loadText(file) {
   try { return fs.readFileSync(file, 'utf8'); }
   catch (e) {
-    console.error(`prompt-doctor: failed to read ${file}: ${e.message}`);
+    console.error(`prompt-medic: failed to read ${file}: ${e.message}`);
     process.exit(2);
   }
 }
@@ -166,14 +166,14 @@ async function main() {
   if (args.stdin) {
     const txt = await readStdin();
     try { body = JSON.parse(txt); }
-    catch (e) { console.error(`prompt-doctor: stdin is not JSON: ${e.message}`); process.exit(2); }
+    catch (e) { console.error(`prompt-medic: stdin is not JSON: ${e.message}`); process.exit(2); }
   } else if (args._.length === 1) {
     body = loadJSON(args._[0]);
   }
 
   const input = buildInput(args, body);
   if (input.messages.length === 0 && input.tools.length === 0) {
-    console.error('prompt-doctor: no messages or tools to audit');
+    console.error('prompt-medic: no messages or tools to audit');
     process.exit(2);
   }
 

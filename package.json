@@ -1,7 +1,7 @@
 {
-  "name": "prompt-doctor",
+  "name": "prompt-medic",
   "version": "0.1.0",
-  "description": "Audit LLM prompts and system messages for waste. Rule-based scanner with token-savings estimates.",
+  "description": "Audit LLM prompts and system messages for token waste. Rule-based scanner with token-savings estimates.",
   "keywords": [
     "llm",
     "prompt",
@@ -17,13 +17,13 @@
   ],
   "license": "MIT",
   "author": "Nate Mason <depmedic.dev@gmail.com>",
-  "homepage": "https://depmedicdev-byte.github.io/prompt-doctor.html",
+  "homepage": "https://depmedicdev-byte.github.io/prompt-medic.html",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/depmedicdev-byte/prompt-doctor.git"
+    "url": "git+https://github.com/depmedicdev-byte/prompt-medic.git"
   },
   "bin": {
-    "prompt-doctor": "./bin/prompt-doctor.js"
+    "prompt-medic": "./bin/prompt-medic.js"
   },
   "main": "./src/index.js",
   "files": [
