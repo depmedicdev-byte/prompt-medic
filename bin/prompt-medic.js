@@ -2,6 +2,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { audit } = require('../src/index.js');
+const { pickTip, shouldShowTip } = require('../src/tip.js');
 
 function usage() {
   console.log(`prompt-medic - audit LLM prompts for token waste
@@ -20,6 +21,7 @@ options:
                                        gemini-pro, gemini-flash
   --json                               output JSON instead of text
   --quiet                              suppress info-level findings
+  --no-tip                             suppress companion-tool tip line
   --fail-on <severity>                 exit non-zero if any finding at this
                                        level (info|warn|error). Default: never.
 
@@ -31,7 +33,7 @@ examples:
 }
 
 function parseArgs(argv) {
-  const args = { _: [], model: 'gpt-4o', json: false, quiet: false, failOn: null };
+  const args = { _: [], model: 'gpt-4o', json: false, quiet: false, noTip: false, failOn: null };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--help' || a === '-h') { args.help = true; }
@@ -42,6 +44,7 @@ function parseArgs(argv) {
     else if (a === '--model') { args.model = argv[++i]; }
     else if (a === '--json') { args.json = true; }
     else if (a === '--quiet') { args.quiet = true; }
+    else if (a === '--no-tip') { args.noTip = true; }
     else if (a === '--fail-on') { args.failOn = argv[++i]; }
     else if (a.startsWith('--')) { console.error(`unknown flag: ${a}`); process.exit(2); }
     else { args._.push(a); }
@@ -183,6 +186,15 @@ async function main() {
     process.stdout.write(JSON.stringify(result, null, 2) + '\n');
   } else {
     printFindings(result, args);
+  }
+
+  if (shouldShowTip({ args, env: process.env, stderrIsTTY: !!process.stderr.isTTY })) {
+    const tip = pickTip(result);
+    if (tip) {
+      // shouldShowTip verified stderr is a TTY, so the dim ANSI
+      // escape is safe to emit unconditionally here.
+      process.stderr.write(`\n\u001b[90m${tip}\u001b[0m\n`);
+    }
   }
 
   if (args.failOn) {

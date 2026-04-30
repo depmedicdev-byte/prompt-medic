@@ -1,6 +1,6 @@
 {
   "name": "prompt-medic",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Audit LLM prompts and system messages for token waste. Rule-based scanner with token-savings estimates.",
   "keywords": [
     "llm",
